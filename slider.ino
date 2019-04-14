@@ -1,13 +1,3 @@
-#include <A4988.h>
-#include <BasicStepperDriver.h>
-#include <DRV8825.h>
-#include <DRV8834.h>
-#include <DRV8880.h>
-#include <MultiDriver.h>
-#include <SyncDriver.h>
-
-
-
 
 /*
   slider
@@ -44,6 +34,11 @@ int buttonCounter = 0;
 int a;
 int b;
 
+float pictures = 100;
+int tid = 600;
+float steps = 100000;
+float exposure = 1;
+
 void setup()
 {
   display.begin(SSD1306_SWITCHCAPVCC, 0x3c); // initialize with the I2C addr 0x3D (for the 128x64)
@@ -62,6 +57,15 @@ void setup()
 }
 void loop()
 {
+ // interval logic ********************************
+    for (float i = steps / pictures; i <  steps + pictures; i = i + steps / pictures ) {
+   
+    Serial.println(i);
+    stepper(steps / pictures, 500);
+    delay((exposure * 1000) + (tid / pictures * 1000));
+    }
+
+
  
   switch (buttonCounter) {
     case 0:
